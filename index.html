@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RITH RATHA | Social Link Dashboard & QR Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Font: Kantumruy Pro & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Kantumruy Pro"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
+            font-family: 'Plus Jakarta Sans', 'Kantumruy Pro', sans-serif;
+        }
+        /* Custom TikTok subtle glow */
+        .tiktok-glow:hover {
+            box-shadow: -3px -3px 15px rgba(37, 244, 238, 0.25), 3px 3px 15px rgba(254, 44, 85, 0.25);
+        }
+        /* Hide default QR output so we render our custom styled canvas */
+        #hidden-qr-container {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex flex-col items-center justify-center p-4 sm:p-6 selection:bg-sky-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-800/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <span id="toast-msg" class="text-sm font-medium">បានរក្សាទុករូបភាព QR Code ជោគជ័យ!</span>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <main class="w-full max-w-md mx-auto space-y-6 my-4">
+        
+        <!-- Profile Header -->
+        <header class="text-center space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300 mb-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Official Contact Dashboard</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">RITH RATHA</h1>
+            <p class="text-xs sm:text-sm text-slate-400">ស្កេន QR Code ឬចុចលើប៊ូតុងខាងក្រោមដើម្បីភ្ជាប់ទំនាក់ទំនង</p>
+        </header>
+
+        <!-- 1. TOP SECTION: Telegram-Inspired Styled QR Code Card -->
+        <section class="flex flex-col items-center">
+            <!-- Styled White Rounded Square Card (Rendered via HTML5 Canvas for crisp 1:1 download) -->
+            <div class="bg-white p-4 sm:p-5 rounded-[2.2rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/20 flex flex-col items-center transition-transform duration-300 hover:scale-[1.02]">
+                <canvas id="styledQrCanvas" width="320" height="360" class="w-60 h-auto sm:w-64 rounded-2xl"></canvas>
+            </div>
+
+            <!-- Hidden container for QRCode.js matrix generation -->
+            <div id="hidden-qr-container"></div>
+
+            <!-- Prominent Download QR Button -->
+            <button onclick="downloadStyledQR()" class="mt-5 w-full max-w-[280px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold py-3 px-5 rounded-2xl shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2.5 transition-all active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-download text-base"></i>
+                <span class="text-sm">ទាញយករូបភាព QR Code</span>
+            </button>
+
+            <!-- Status indicator showing what URL the QR currently encodes -->
+            <p id="qr-target-hint" class="mt-2.5 text-[11px] text-slate-400 text-center max-w-xs leading-relaxed"></p>
+        </section>
+
+        <!-- 2. MAIN SECTION: 2x2 Grid Dashboard of 4 Social Platforms -->
+        <section aria-label="Social Media Platforms">
+            <div class="grid grid-cols-2 gap-3.5 sm:gap-4">
+                
+                <!-- Card 1: Telegram -->
+                <a href="https://t.me/RITH_RATHA_KH" target="_blank" rel="noopener noreferrer"
+                   class="group relative bg-slate-900/80 hover:bg-sky-950/60 border border-slate-800 hover:border-sky-500/50 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-sky-500/15">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <h2 class="font-bold text-base text-white group-hover:text-sky-300 transition-colors">Telegram</h2>
+                    <p class="text-xs text-slate-400 mt-0.5 truncate w-full">@RITH_RATHA_KH</p>
+                    <span class="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-sky-400 opacity-80 group-hover:opacity-100">
+                        ផ្ញើសារ <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <!-- Card 2: YouTube -->
+                <a href="https://www.youtube.com/@RathaTechnologySharing" target="_blank" rel="noopener noreferrer"
+                   class="group relative bg-slate-900/80 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/50 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-red-500/15">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/30 mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h2 class="font-bold text-base text-white group-hover:text-red-300 transition-colors">YouTube</h2>
+                    <p class="text-xs text-slate-400 mt-0.5 truncate w-full">@RathaTechnologySharing</p>
+                    <span class="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-red-400 opacity-80 group-hover:opacity-100">
+                        ទស្សនាវីដេអូ <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <!-- Card 3: Facebook -->
+                <a href="https://web.facebook.com/profile.php?id=61593568615426" target="_blank" rel="noopener noreferrer"
+                   class="group relative bg-slate-900/80 hover:bg-blue-950/60 border border-slate-800 hover:border-blue-500/50 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-blue-500/15">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-600/30 mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <h2 class="font-bold text-base text-white group-hover:text-blue-300 transition-colors">Facebook</h2>
+                    <p class="text-xs text-slate-400 mt-0.5 truncate w-full">Rith Ratha</p>
+                    <span class="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-blue-400 opacity-80 group-hover:opacity-100">
+                        តាមដាន <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+                <!-- Card 4: TikTok -->
+                <a href="https://www.tiktok.com/@rithratha2?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer"
+                   class="group relative bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-pink-500/40 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 shadow-lg tiktok-glow">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-950 border border-white/15 flex items-center justify-center text-white text-2xl shadow-lg mb-3 group-hover:scale-110 transition-transform relative overflow-hidden">
+                        <i class="fa-brands fa-tiktok relative z-10 drop-shadow-[2px_2px_0px_#fe2c55]"></i>
+                    </div>
+                    <h2 class="font-bold text-base text-white group-hover:text-pink-300 transition-colors">TikTok</h2>
+                    <p class="text-xs text-slate-400 mt-0.5 truncate w-full">@rithratha2</p>
+                    <span class="mt-3 inline-flex items-center gap-1 text-[11px] font-medium text-cyan-300 opacity-80 group-hover:opacity-100">
+                        មើលវីដេអូខ្លី <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- 3. COLLAPSIBLE GITHUB PAGES GUIDE IN KHMER -->
+        <section class="bg-slate-900/70 border border-slate-800/90 rounded-2xl overflow-hidden">
+           
+
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-[11px] text-slate-500 pt-1">
+            &copy; 2026 RITH RATHA &bull; All Social Channels
+        </footer>
+    </main>
+
+    <script>
+        // Determine what URL the QR Code should encode
+        function getTargetUrl() {
+            const href = window.location.href;
+            // If hosted on a live web server (like GitHub Pages), encode the live dashboard URL
+            if (href.startsWith('http://') || href.startsWith('https://')) {
+                return href;
+            }
+            // Fallback when opened locally or inside an iframe preview so scanning immediately works
+            return 'https://t.me/RITH_RATHA_KH';
+        }
+
+        // Render the Telegram-style Rounded QR Card onto HTML5 Canvas
+        function renderStyledQRCard() {
+            const targetUrl = getTargetUrl();
+            const isLiveHosted = window.location.href.startsWith('http://') || window.location.href.startsWith('https://');
+            
+            const hintEl = document.getElementById('qr-target-hint');
+            if (isLiveHosted) {
+                hintEl.innerHTML = `<span class="text-emerald-400 font-medium"><i class="fa-solid fa-circle-check"></i> Live Dashboard QR:</span> ស្កេនដើម្បីបើកផ្ទាំងប៊ូតុងទាំង ៤`;
+            } else {
+                hintEl.innerHTML = `<span class="text-amber-400 font-medium"><i class="fa-solid fa-circle-info"></i> Preview Mode:</span> បច្ចុប្បន្នភ្ជាប់ទៅ @Mr.RITH RATHA`;
+            }
+
+            // Generate raw QR matrix using QRCode.js
+            const hiddenContainer = document.getElementById('hidden-qr-container');
+            hiddenContainer.innerHTML = '';
+            const qrInstance = new QRCode(hiddenContainer, {
+                text: targetUrl,
+                width: 240,
+                height: 240,
+                colorDark: '#090d16',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H // High error correction allows center logo
+            });
+
+            // Wait briefly for QRCode.js canvas/table generation, then draw styled card
+            setTimeout(() => {
+                const canvas = document.getElementById('styledQrCanvas');
+                const ctx = canvas.getContext('2d');
+                const W = canvas.width;  // 320
+                const H = canvas.height; // 360
+
+                // 1. Clear & fill pure white background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, W, H);
+
+                // 2. Extract generated QR image/canvas
+                const qrSourceCanvas = hiddenContainer.querySelector('canvas');
+                const qrSourceImg = hiddenContainer.querySelector('img');
+
+                const qrSize = 248;
+                const qrX = (W - qrSize) / 2;
+                const qrY = 24;
+
+                if (qrSourceCanvas) {
+                    ctx.drawImage(qrSourceCanvas, qrX, qrY, qrSize, qrSize);
+                } else if (qrSourceImg) {
+                    ctx.drawImage(qrSourceImg, qrX, qrY, qrSize, qrSize);
+                }
+
+                // 3. Draw Center Circular Badge (Telegram Paper-Plane / Hub Emblem)
+                const centerX = W / 2;
+                const centerY = qrY + qrSize / 2;
+                const badgeRadius = 26;
+
+                // White outer ring around badge
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, badgeRadius + 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+
+                // Dark sleek inner circle
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, badgeRadius, 0, Math.PI * 2);
+                ctx.fillStyle = '#090d16';
+                ctx.fill();
+
+                // Draw crisp paper-plane / hub icon inside center badge
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.moveTo(-11, 1);
+                ctx.lineTo(10, -9);
+                ctx.lineTo(6, 11);
+                ctx.lineTo(-1, 5);
+                ctx.lineTo(-5, 9);
+                ctx.lineTo(-5, 3);
+                ctx.lineTo(6, -5);
+                ctx.lineTo(-7, 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+
+                // 4. Draw '@RITH_RATHA_KH' handle underneath
+                ctx.fillStyle = '#090d16';
+                ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('@RITH_RATHA_KH', W / 2, 316);
+            }, 100);
+        }
+
+        // Download the styled QR card as PNG
+        function downloadStyledQR() {
+            const canvas = document.getElementById('styledQrCanvas');
+            // Create an export canvas with nice outer white rounded padding
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 400;
+            exportCanvas.height = 440;
+            const eCtx = exportCanvas.getContext('2d');
+
+            // Fill background
+            eCtx.fillStyle = '#ffffff';
+            eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+            // Draw the main styled QR canvas centered
+            eCtx.drawImage(canvas, 40, 40, 320, 360);
+
+            const dataUrl = exportCanvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'RITH_RATHA_KH_QR_Dashboard.png';
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('បានទាញយករូបភាព QR Code ជោគជ័យ!');
+        }
+
+        // Toggle GitHub Pages Guide
+        function toggleGuide() {
+            const content = document.getElementById('guide-content');
+            const chevron = document.getElementById('guide-chevron');
+            content.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        // Copy current URL using execCommand fallback
+        function copyCurrentUrl() {
+            const tempInput = document.createElement('input');
+            tempInput.value = getTargetUrl();
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('បានចម្លងតំណភ្ជាប់ (URL) រួចរាល់!');
+        }
+
+        // Toast notification helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', renderStyledQRCard);
+    </script>
+</body>
+</html>
